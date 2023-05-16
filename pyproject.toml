@@ -1,0 +1,61 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+
+[project]
+version = "0.0"
+name = "spaeti"
+description = ""
+
+authors = [
+  { name="Florian Scherf", email="mail@florianscherf.de" },
+]
+
+license = { file="LICENSE.txt" }
+readme = "README.md"
+requires-python = ">=3.7"
+
+dependencies = [
+  "lona==1.13",
+  "lona-picocss==0.3.1",
+  "aiohttp-wsgi==0.10.0",
+  "django>=3.2,<3.3",
+]
+
+
+[project.optional-dependencies]
+dev = [
+
+  # linting
+  "mypy==1.3.0",
+  "isort==5.12.0",
+
+  # testing
+  "tox",
+  "coverage",
+  "pytest==7.3.1",
+
+  # packaging
+  "build",
+  "twine",
+]
+
+
+[tool.setuptools]
+include-package-data = true
+
+[tool.setuptools.packages.find]
+include = ["spaeti*"]
+
+[tool.setuptools.package-data]
+"spaeti.static" = ["**"]
+"spaeti.templates" = ["**"]
+
+[tool.setuptools.exclude-package-data]
+"*" = [
+  ".*",
+  "~*",
+  "*.swp",
+  "*.pyc",
+]
