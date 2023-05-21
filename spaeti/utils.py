@@ -1,3 +1,12 @@
+import os
+
+
+def debug_is_enabled():
+    env_var = os.environ.get('SPAETI_DEBUG', '0').strip().lower()
+
+    return env_var in ('1', 'true', 'yes')
+
+
 def format_euro_amount(amount_in_cent, html=False):
     euro = amount_in_cent // 100
     cent = int(((amount_in_cent / 100) - (amount_in_cent // 100)) * 100)

@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 
 from pathlib import Path
 
+from spaeti.utils import debug_is_enabled
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -23,7 +25,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-h-$^-&5&#4@r@(v3=l_qs81^g0%pngip53r&0!eha3_jvzs*=h'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = debug_is_enabled()
 
 ALLOWED_HOSTS = []
 
@@ -125,3 +127,13 @@ STATIC_ROOT = BASE_DIR / 'static/django'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# mail
+if DEBUG:
+    EMAIL_HOST = 'localhost'
+    EMAIL_PORT = 1025
+    EMAIL_USE_TLS = False
+    EMAIL_USE_SSL = False
+
+# auth
+LOGIN_REDIRECT_URL = '/admin/login'

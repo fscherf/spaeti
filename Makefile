@@ -2,6 +2,11 @@ SHELL=/bin/bash
 PYTHON=python3
 PYTHON_ENV=env
 
+# spaeti variables
+DEBUG=1
+SMTP_HOST=localhost
+SMTP_PORT=1025
+
 # django variables
 DJANGO_SETTINGS_MODULE=spaeti._django.settings
 DJANGO_DATABASE_NAME=db.sqlite3
@@ -33,6 +38,10 @@ shell: $(PYTHON_ENV)
 	. $(PYTHON_ENV)/bin/activate && \
 	rlpython
 
+smtp-server: $(PYTHON_ENV)
+	. $(PYTHON_ENV)/bin/activate && \
+	python -m smtpd -c DebuggingServer -n $(SMTP_HOST):$(SMTP_PORT)
+
 # django targets
 $(DJANGO_DATABASE_NAME): | $(PYTHON_ENV)
 	. $(PYTHON_ENV)/bin/activate && \
@@ -47,7 +56,7 @@ $(DJANGO_STATIC_ROOT): | $(PYTHON_ENV)
 # lona targets
 server: $(PYTHON_ENV) | $(DJANGO_DATABASE_NAME) $(DJANGO_STATIC_ROOT)
 	. $(PYTHON_ENV)/bin/activate && \
-	lona run-server \
+	SPAETI_DEBUG=$(DEBUG) lona run-server \
 		--project-root=spaeti \
 		-s settings.py \
 		--host $(HOST) \
