@@ -18,7 +18,7 @@ PORT=8080
 LOG_LEVEL=info
 SHELL_SERVER_URL=file://socket
 
-.PHONY: all clean collectstatic server shell server-shell
+.PHONY: all clean collectstatic server shell server-shell dist _release
 
 all: | server
 
@@ -68,6 +68,16 @@ server: $(PYTHON_ENV) | $(DJANGO_DATABASE_NAME) $(DJANGO_STATIC_ROOT)
 server-shell: $(PYTHON_ENV)
 	. $(PYTHON_ENV)/bin/activate && \
 	rlpython $(SHELL_SERVER_URL) $(args)
+
+# test targets
+test:
+	docker-compose run playwright tox $(args)
+
+lint:
+	docker-compose run playwright tox -e lint $(args)
+
+isort:
+	docker-compose run playwright tox -e isort $(args)
 
 # packaging targets
 dist: | $(PYTHON_ENV)
