@@ -45,6 +45,11 @@ dev = [
 [tool.setuptools]
 include-package-data = true
 
+script-files = [
+  "bin/spaeti-django-admin",
+]
+
+
 [tool.setuptools.packages.find]
 include = ["spaeti*"]
 
