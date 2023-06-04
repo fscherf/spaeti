@@ -309,6 +309,5 @@ tags
 [._]*.un~
 
 # End of https://www.toptal.com/developers/gitignore/api/python,vim,emacs,eclipse
-/envs/
 /db.sqlite3
 /spaeti/static/django
