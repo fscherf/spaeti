@@ -16,14 +16,18 @@ class AccountTransaction(models.Model):
 
     sender_account = models.ForeignKey(
         'spaeti.Account',
-        on_delete=models.CASCADE,
+        on_delete=models.SET_NULL,
         related_name='sender_account',
+        blank=True,
+        null=True,
     )
 
     receiver_account = models.ForeignKey(
         'spaeti.Account',
-        on_delete=models.CASCADE,
+        on_delete=models.SET_NULL,
         related_name='receiver_account',
+        blank=True,
+        null=True,
     )
 
     amount = models.IntegerField()
