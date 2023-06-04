@@ -53,6 +53,10 @@ $(DJANGO_STATIC_ROOT): | $(PYTHON_ENV)
 	. $(PYTHON_ENV)/bin/activate && \
 	DJANGO_SETTINGS_MODULE=$(DJANGO_SETTINGS_MODULE) django-admin collectstatic $(args)
 
+migrations: | $(PYTHON_ENV)
+	. $(PYTHON_ENV)/bin/activate && \
+	DJANGO_SETTINGS_MODULE=$(DJANGO_SETTINGS_MODULE) django-admin makemigrations $(args)
+
 # lona targets
 server: $(PYTHON_ENV) | $(DJANGO_DATABASE_NAME) $(DJANGO_STATIC_ROOT)
 	. $(PYTHON_ENV)/bin/activate && \
