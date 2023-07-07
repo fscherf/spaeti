@@ -1,3 +1,4 @@
+from lona_picocss.routes import SETTINGS_ROUTE, DEMO_ROUTES
 from lona.routing import MATCH_ALL, Route
 from aiohttp_wsgi import WSGIHandler
 
@@ -15,12 +16,10 @@ routes = [
     Route(MATCH_ALL, django_wsgi_handler, http_pass_through=True),
 ]
 
+# lona-picocss debug urls
 if debug_is_enabled():
-    routes.insert(
-        0,
-        Route(
-            '/_picocss/settings(/)',
-            'lona_picocss.views.settings.SettingsView',
-            name='picocss__settings',
-        ),
-    )
+    routes = [
+        SETTINGS_ROUTE,
+        *DEMO_ROUTES,
+        *routes,
+    ]

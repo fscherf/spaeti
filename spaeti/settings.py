@@ -1,4 +1,7 @@
-from lona_picocss.views.error_views import (
+from lona_picocss import (
+    get_django_show_exceptions,
+    get_django_auth_navigation,
+    get_debug_navigation,
     Error500View,
     Error404View,
     Error403View,
@@ -38,6 +41,7 @@ STATIC_DIRS = [
 
 # middlewares
 MIDDLEWARES = [
+    'lona_picocss.middlewares.LonaPicocssMiddleware',
     'lona_django.middlewares.DjangoSessionMiddleware',
 ]
 
@@ -48,10 +52,19 @@ PICOCSS_LOGO = 'logo.svg'
 PICOCSS_THEME = 'light'
 PICOCSS_COLOR_SCHEME = 'light-green'
 
-PICOCSS_MENU = [
-    ['Admin', '/admin/'],
-    ['Account', [
-        ['Login', '/accounts/login/'],
-        ['Logout', '/accounts/logout/'],
-    ]],
-]
+
+def get_navigation(server, request):
+    nav_items = []
+
+    # lona-picocss debug
+    if debug_is_enabled and request.user.is_staff:
+        nav_items.extend(get_debug_navigation(server, request))
+
+    # django auth
+    nav_items.extend(get_django_auth_navigation(server, request))
+
+    return nav_items
+
+
+PICOCSS_NAVIGATION = get_navigation
+PICOCSS_SHOW_EXCEPTIONS = get_django_show_exceptions

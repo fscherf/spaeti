@@ -18,7 +18,7 @@ requires-python = ">=3.7"
 
 dependencies = [
   "lona==1.13",
-  "lona-picocss==0.3.1",
+  "lona-picocss==0.4",
   "lona-django==0.1.1",
   "aiohttp-wsgi==0.10.0",
   "django>=3.2,<3.3",

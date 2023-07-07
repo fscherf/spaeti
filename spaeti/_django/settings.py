@@ -33,6 +33,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'lona_picocss',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -136,4 +137,4 @@ if DEBUG:
     EMAIL_USE_SSL = False
 
 # auth
-LOGIN_REDIRECT_URL = '/admin/login'
+LOGIN_REDIRECT_URL = '/'
