@@ -1,3 +1,5 @@
+import os
+
 from lona_picocss import (
     get_django_show_exceptions,
     get_django_auth_navigation,
@@ -8,9 +10,10 @@ from lona_picocss import (
 )
 from lona_picocss import settings as picocss_settings
 
-from spaeti.utils import debug_is_enabled
+from spaeti.utils import test_suite_is_running, debug_is_enabled
 
 DEBUG = debug_is_enabled()
+TEST_SUITE_IS_RUNNING = test_suite_is_running()
 
 # feature flags
 STOP_DAEMON_WHEN_VIEW_FINISHES = False
@@ -32,6 +35,7 @@ ERROR_404_VIEW = Error404View
 ERROR_500_VIEW = Error500View
 
 # static files
+STATIC_FILES_SERVE = TEST_SUITE_IS_RUNNING
 STATIC_URL_PREFIX = '/static/'
 
 STATIC_DIRS = [
@@ -68,3 +72,10 @@ def get_navigation(server, request):
 
 PICOCSS_NAVIGATION = get_navigation
 PICOCSS_SHOW_EXCEPTIONS = get_django_show_exceptions
+
+# client
+CLIENT_PING_INTERVAL = 30  # nginx proxy_read_timeout is set to 60s by default
+
+# threads
+MAX_WORKER_THREADS = int(os.environ.get('SPAETI_MAX_WORKER_THREADS', '4'))
+MAX_RUNTIME_THREADS = int(os.environ.get('SPAETI_MAX_RUNTIME_THREADS', '6'))

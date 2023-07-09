@@ -11,8 +11,14 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
 from pathlib import Path
+import os
 
-from spaeti.utils import debug_is_enabled
+from spaeti.utils import (
+    test_suite_is_running,
+    debug_is_enabled,
+    env_get_bool,
+    env_get_int,
+)
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -22,7 +28,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-h-$^-&5&#4@r@(v3=l_qs81^g0%pngip53r&0!eha3_jvzs*=h'
+SECRET_KEY = os.environ.get('SPAETI_DJANGO_SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = debug_is_enabled()
@@ -77,12 +83,24 @@ WSGI_APPLICATION = 'spaeti._django.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR.parent / 'db.sqlite3',
+if test_suite_is_running():
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR.parent / 'db.sqlite3',
+        }
     }
-}
+
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql_psycopg2',
+            'HOST': 'postgres',
+            'NAME': os.environ.get('POSTGRES_DB'),
+            'USER': os.environ.get('POSTGRES_USER'),
+            'PASSWORD': os.environ.get('POSTGRES_PASSWORD'),
+        },
+    }
 
 
 # Password validation
@@ -122,7 +140,11 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 STATIC_URL = '/static/django/'
-STATIC_ROOT = BASE_DIR / 'static/django'
+
+STATIC_ROOT = os.path.join(
+    os.environ.get('SPAETI_STATIC_DIR', 'static'),
+    'django',
+)
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
@@ -130,11 +152,10 @@ STATIC_ROOT = BASE_DIR / 'static/django'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # mail
-if DEBUG:
-    EMAIL_HOST = 'localhost'
-    EMAIL_PORT = 1025
-    EMAIL_USE_TLS = False
-    EMAIL_USE_SSL = False
+EMAIL_HOST = os.environ.get('SPAETI_EMAIL_HOST', '')
+EMAIL_PORT = env_get_int('SPAETI_EMAIL_PORT')
+EMAIL_USE_TLS = env_get_bool('SPAETI_EMAIL_USE_TLS')
+EMAIL_USE_SSL = env_get_bool('SPAETI_EMAIL_USE_SSL')
 
 # auth
 LOGIN_REDIRECT_URL = '/'

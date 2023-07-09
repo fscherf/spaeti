@@ -17,11 +17,12 @@ readme = "README.md"
 requires-python = ">=3.7"
 
 dependencies = [
-  "lona==1.14",
+  "lona@git+https://github.com/lona-web-org/lona.git@master",
   "lona-picocss==0.4",
   "lona-django==0.1.1",
   "aiohttp-wsgi==0.10.0",
   "django>=3.2,<3.3",
+  "psycopg2-binary",
 ]
 
 

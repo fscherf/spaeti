@@ -1,11 +1,61 @@
 version: "3"
 
-networks:
-    net:
-        driver: bridge
-
 services:
+
+    # app #####################################################################
+    postgres:
+        restart: unless-stopped
+        image: postgres:15-alpine
+
+        volumes:
+            - ./data/postgres:/var/lib/postgresql/data
+
+        env_file: ".env"
+
+    nginx:
+        restart: unless-stopped
+        image: nginx:1-alpine
+
+        volumes:
+            - ./nginx.conf:/etc/nginx/nginx.conf
+            - ./data/static:/var/www/static
+
+        ports:
+            - "${SPAETI_HOST}:${SPAETI_PORT}:80"
+
+    test-smtpd:
+        restart: unless-stopped
+        image: python:3.11-slim-bookworm
+        command: "bash -c 'python -u -m smtpd -c DebuggingServer -n 0.0.0.0:1025 1>&2'"
+
+    app:
+        restart: unless-stopped
+
+        depends_on:
+            - postgres
+            - nginx
+
+        build:
+            context: ./
+            dockerfile: spaeti.Dockerfile
+
+        volumes:
+            - ./data:/data
+            - ./:/app
+
+        ports:
+            - "${SPAETI_DEBUG_HOST}:${SPAETI_DEBUG_PORT}:8081"
+
+        env_file: ".env"
+
+        working_dir: "/app"
+        command: "./docker-entrypoint.sh run-server"
+
+    # tests ###################################################################
     playwright:
+        profiles:
+            - tools
+
         user: 1000:1000
 
         build:
@@ -14,9 +64,6 @@ services:
             args:
                 - UID=${UID:-1000}
                 - GID=${GID:-1000}
-
-        networks:
-            - net
 
         volumes:
             - ./:/app
