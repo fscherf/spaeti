@@ -17,7 +17,7 @@ readme = "README.md"
 requires-python = ">=3.7"
 
 dependencies = [
-  "lona==1.13",
+  "lona==1.14",
   "lona-picocss==0.4",
   "lona-django==0.1.1",
   "aiohttp-wsgi==0.10.0",
