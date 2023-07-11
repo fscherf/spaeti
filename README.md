@@ -12,7 +12,7 @@ Spaeti is a re-implementation of [prepaid-mate](https://github.com/freieslabor/p
 1. Setup [docker](https://www.docker.com/) on your system.
 
 ```
-$ sudo apt install docker docker.io docker-compose
+$ sudo apt install docker.io docker-compose
 $ sudo adduser $USER docker
 ```
 
