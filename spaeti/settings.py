@@ -46,7 +46,7 @@ STATIC_DIRS = [
 # middlewares
 MIDDLEWARES = [
     'lona_picocss.middlewares.LonaPicocssMiddleware',
-    'lona_django.middlewares.DjangoSessionMiddleware',
+    'spaeti.lona_django.middlewares.DjangoSessionMiddleware',
 ]
 
 # lona-picocss settings
