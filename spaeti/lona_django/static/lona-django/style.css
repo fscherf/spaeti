@@ -1,0 +1,28 @@
+/* form -------------------------------------------------------------------- */
+.django-form label {
+    font-weight: bold;
+}
+
+.django-form .django-form-error-list {
+    color: red;
+}
+
+/* table ------------------------------------------------------------------- */
+.django-table table th.select-row,
+.django-table table td.select-row {
+    width: 0.01%;
+    white-space: nowrap;
+}
+
+.django-table .right-aligned {
+    text-align: right;
+}
+
+/* attribute table --------------------------------------------------------- */
+.django-attribute-table table th {
+    width: 0.01%;
+    white-space: nowrap;
+    vertical-align: top;
+    text-align: right;
+    font-weight: bold;
+}
