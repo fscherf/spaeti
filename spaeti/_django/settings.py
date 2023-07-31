@@ -152,10 +152,15 @@ STATIC_ROOT = os.path.join(
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # mail
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = os.environ.get('SPAETI_EMAIL_HOST', '')
 EMAIL_PORT = env_get_int('SPAETI_EMAIL_PORT')
+EMAIL_HOST_USER = os.environ.get('SPAETI_EMAIL_HOST_USER', '')
+EMAIL_HOST_PASSWORD = os.environ.get('SPAETI_EMAIL_HOST_PASSWORD', '')
 EMAIL_USE_TLS = env_get_bool('SPAETI_EMAIL_USE_TLS')
 EMAIL_USE_SSL = env_get_bool('SPAETI_EMAIL_USE_SSL')
+
+DEFAULT_FROM_EMAIL = os.environ.get('SPAETI_DEFAULT_FROM_EMAIL', '')
 
 # auth
 LOGIN_REDIRECT_URL = '/'
