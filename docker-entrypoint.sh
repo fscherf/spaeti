@@ -4,7 +4,7 @@ export DJANGO_SETTINGS_MODULE=spaeti._django.settings
 
 
 collect-static() {
-    rm -rf $SPAETI_STATIC_DIR
+    rm -rf $SPAETI_STATIC_DIR/*
     mkdir -p $SPAETI_STATIC_DIR
 
     lona collect-static $SPAETI_STATIC_DIR \
