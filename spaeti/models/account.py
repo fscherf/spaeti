@@ -1,12 +1,21 @@
+from functools import lru_cache
+
+from django.contrib.auth import get_user_model
 from django.db import models
 
-
-class AccountManager(models.Manager):
-    pass
+from spaeti import SPAETI_DEFAULT_BANK_ACCOUNT_NAME
 
 
 class Account(models.Model):
-    objects = AccountManager()
+    username = models.CharField(
+        max_length=256,
+        unique=True,
+    )
+
+    comment = models.TextField(
+        blank=True,
+        null=True,
+    )
 
     created = models.DateTimeField(
         auto_now_add=True,
@@ -18,34 +27,36 @@ class Account(models.Model):
         editable=False,
     )
 
-    person = models.ForeignKey(
-        'spaeti.Person',
-        on_delete=models.CASCADE,
-    )
+    @lru_cache
+    def get_default_bank_account(self):
+        return self.bankaccount_set.get(
+            name=SPAETI_DEFAULT_BANK_ACCOUNT_NAME,
+        )
 
-    name = models.CharField(
-        max_length=256,
-    )
+    def get_user(self):
+        user = get_user_model().objects.filter(username=self.username)
 
-    balance_cache = models.IntegerField(
-        editable=False,
-        default=0,
-    )
+        if user.exists():
+            return user.get()
 
-    balance_cache_timestamp = models.DateTimeField(
-        auto_now_add=True,
-        editable=False,
-    )
+    def get_flags(self):
+        flags = set()
+        user = self.get_user()
 
-    comment = models.TextField(
-        blank=True,
-        null=True,
-    )
+        if user:
+            if user.is_active:
+                flags.add('login')
 
-    class Meta:
-        unique_together = ('person', 'name')
-        verbose_name = 'Account'
-        verbose_name_plural = 'Accounts'
+            if user.is_staff:
+                flags.add('django-staff')
+
+            if user.is_superuser:
+                flags.add('django-superuser')
+
+            for group in user.groups.filter(name__startswith='spaeti-'):
+                flags.add(group.name)
+
+        return sorted(list(flags))
 
     def __str__(self):
-        return f'{self.person.username} - {self.name}'
+        return self.username

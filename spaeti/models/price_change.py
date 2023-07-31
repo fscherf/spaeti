@@ -1,23 +1,31 @@
 from django.db import models
 
+from spaeti.utils import format_euro_amount
 
-class ProductTransaction(models.Model):
-    transaction_id = models.UUIDField()
+
+class ProductManager(models.Manager):
+    pass
+
+
+class PriceChange(models.Model):
+    objects = ProductManager()
+
     date = models.DateTimeField()
 
     issuer = models.ForeignKey(
         'spaeti.Account',
         on_delete=models.CASCADE,
+        blank=True,
+        null=True,
     )
 
     product = models.ForeignKey(
         'spaeti.Product',
         on_delete=models.CASCADE,
+        related_name='price_changes',
     )
 
-    quantity = models.IntegerField()
-
-    stock = models.IntegerField()
+    price = models.IntegerField()
 
     comment = models.TextField(
         blank=True,
@@ -34,9 +42,15 @@ class ProductTransaction(models.Model):
         editable=False,
     )
 
-    class Meta:
-        verbose_name = 'Product Transaction'
-        verbose_name_plural = 'Product Transactions'
-
     def __str__(self):
-        return f'{self.product} +{self.quantity}'
+        price = format_euro_amount(
+            amount_in_cent=self.price,
+            force_sign=True,
+            html=False,
+        )
+
+        return f'{self.product} {price}'
+
+    class Meta:
+        verbose_name = 'Price Change'
+        verbose_name_plural = 'Price Changes'
