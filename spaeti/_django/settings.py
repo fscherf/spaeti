@@ -33,7 +33,7 @@ SECRET_KEY = os.environ.get('SPAETI_DJANGO_SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = debug_is_enabled()
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition

@@ -61,7 +61,7 @@ def get_navigation(server, request):
     nav_items = []
 
     # lona-picocss debug
-    if debug_is_enabled and request.user.is_staff:
+    if debug_is_enabled() and request.user.is_staff:
         nav_items.extend(get_debug_navigation(server, request))
 
     # django auth
