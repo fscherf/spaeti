@@ -1,8 +1,7 @@
 import logging
 
-from django.contrib.auth.models import User, AnonymousUser
+from django.contrib.auth.models import AnonymousUser, User
 from django.contrib.sessions.models import Session
-
 from lona.errors import ForbiddenError
 
 logger = logging.getLogger('lona.contrib.django.auth')
