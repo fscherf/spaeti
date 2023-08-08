@@ -1,18 +1,24 @@
+.PHONY: build
+
+
 # app #########################################################################
-server:
+.env: 
+	cp example.env .env
+
+server: .env
 	docker compose up $(args)
 
-restart-app:
-	docker compose restart app --no-deps
-
 migrate:
-	docker compose exec app ./docker-entrypoint.sh migrate $(args)
+	docker compose exec app /app/scripts/manage.py migrate $(args)
 
-migrations:
-	docker compose exec app ./docker-entrypoint.sh makemigrations spaeti $(args)
+collect-static:
+	docker compose exec app /app/scripts/collect-static $(args)
 
-superuser:
-	docker compose exec app ./docker-entrypoint.sh createsuperuser $(args)
+createsuperuser:
+	docker compose exec app /app/scripts/manage.py createsuperuser $(args)
+
+build:
+	docker compose build $(args)
 
 # tests #######################################################################
 test:

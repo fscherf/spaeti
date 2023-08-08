@@ -1,0 +1,12 @@
+#!/bin/bash
+
+export DJANGO_SETTINGS_MODULE=spaeti._django.settings
+
+rm -rf $SPAETI_STATIC_DIR/*
+mkdir -p $SPAETI_STATIC_DIR
+
+lona collect-static $SPAETI_STATIC_DIR \
+    --project-root=/app/spaeti \
+    -s settings.py
+
+django-admin collectstatic

@@ -26,8 +26,8 @@ $ docker-compose up
 3. While the app is running, setup a database and a admin user
 
 ```
-$ docker-compose exec app ./docker-entrypoint.sh migrate
-$ docker-compose exec app ./docker-entrypoint.sh createsuperuser
+$ docker-compose exec app /app/scripts/manage.py migrate
+$ docker-compose exec app /app/scripts/manage.py createsuperuser
 ```
 
 

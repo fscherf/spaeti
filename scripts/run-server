@@ -1,0 +1,13 @@
+#!/bin/bash
+
+export DJANGO_SETTINGS_MODULE=spaeti._django.settings
+
+exec lona run-server \
+    --project-root=/app/spaeti \
+    -s settings.py \
+    --host=0.0.0.0 \
+    --port=8080 \
+    --log-level=info \
+    --shell-server-url=0.0.0.0:$SPAETI_MONITOR_PORT \
+    --live-reload \
+    $@

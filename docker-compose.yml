@@ -31,11 +31,25 @@ services:
         image: python:3.11-slim-bookworm
         command: "bash -c 'python -u -m smtpd -c DebuggingServer -n 0.0.0.0:1025 1>&2'"
 
+    static-files:
+        build:
+            context: ./
+            dockerfile: spaeti.Dockerfile
+
+        volumes:
+            - ./data:/data
+            - ./:/app
+
+        env_file: ".env"
+
+        working_dir: "/app"
+        command: "./scripts/collect-static"
+
     app:
         restart: unless-stopped
 
         depends_on:
-            - postgres
+            - static-files
 
         build:
             context: ./
@@ -46,12 +60,13 @@ services:
             - ./:/app
 
         ports:
-            - "${SPAETI_DEBUG_HOST}:${SPAETI_DEBUG_PORT}:8081"
+            - "${SPAETI_MONITOR_HOST}:${SPAETI_MONITOR_PORT}:${SPAETI_MONITOR_PORT}"
+            - "${SPAETI_DEBUG_HOST}:${SPAETI_DEBUG_PORT}:${SPAETI_DEBUG_PORT}"
 
         env_file: ".env"
 
         working_dir: "/app"
-        command: "./docker-entrypoint.sh run-server"
+        command: "./scripts/run-server"
 
     # tests ###################################################################
     playwright:
