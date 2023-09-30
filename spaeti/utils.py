@@ -19,23 +19,25 @@ def test_suite_is_running():
     return env_get_bool('SPAETI_TESTING')
 
 
-def format_euro_amount(amount_in_cent, html=False):
+def format_euro_amount(amount_in_cent, force_sign=False, html=False):
     euro = amount_in_cent // 100
     cent = int(((amount_in_cent / 100) - (amount_in_cent // 100)) * 100)
 
-    prefix = ''
+    sign = ''
     color = 'black'
 
     if amount_in_cent > 0:
-        prefix = '+'
+        sign = '+'
         color = 'green'
 
     elif amount_in_cent < 0:
-        prefix = '-'
+        sign = '-'
         color = 'red'
 
-    # FIXME
-    amount_string = f"{prefix}{'{:,}'.format(euro, ',').replace(',', '.')},{cent:02d}€"  # NOQA
+    if amount_in_cent > 0 and not force_sign:
+        sign = ''
+
+    amount_string = f"{sign}{'{:,}'.format(euro, ',').replace(',', '.')},{cent:02d}€"  # NOQA
 
     if html:
         return f'<span style="color: {color}">{amount_string}</span>'
