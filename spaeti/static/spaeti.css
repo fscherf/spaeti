@@ -1,0 +1,122 @@
+/* page -------------------------------------------------------------------- */
+@media (max-width: 992px) {
+    #lona-header nav {
+        border-bottom: 2px solid var(--table-border-color);
+    }
+
+    body {
+        padding: 0;
+    }
+}
+
+/* actions ----------------------------------------------------------------- */
+.actions .action {
+    margin-right: 0.5rem;
+    margin-bottom: 0.5rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.2rem;
+}
+
+.actions .spacer {
+    display: inline-block;
+    width: 1.5rem;
+}
+
+.actions .action:last-child {
+    margin-right: 0;
+}
+
+@media (min-width: 992px) {
+    .actions {
+        text-align: right;
+    }
+}
+
+/* mobile */
+@media (max-width: 992px) {
+    .actions {
+        text-align: left;
+    }
+
+    .actions .spacer {
+        display: none;
+    }
+}
+
+/* heading ----------------------------------------------------------------- */
+@media (min-width: 992px) {
+    .heading {
+        margin-top: 1rem;
+    }
+
+    .heading h1 {
+        float: left;
+        line-height: var(--font-size);
+        margin-bottom: 1rem;
+    }
+
+    .heading::after {
+        content: "";
+        clear: both;
+        display: table;
+    }
+}
+
+.heading .actions .action {
+    padding: 0.2rem 0.5rem;
+}
+
+/* mobile */
+@media (max-width: 992px) {
+    .heading h1 {
+        margin-bottom: 1rem;
+    }
+}
+
+/* breadcrumb -------------------------------------------------------------- */
+.breadcrumb {
+    margin-bottom: 1rem;
+}
+
+/* modal ------------------------------------------------------------------- */
+dialog article {
+    width: 100%;
+}
+
+/* django form ------------------------------------------------------------- */
+.django-form label {
+    font-weight: bold;
+}
+
+.django-form .django-form-error-list {
+    color: red;
+}
+
+/* django table ------------------------------------------------------------ */
+.django-table table tr th:first-child,
+.django-table table tr td:first-child {
+    padding-left: 0;
+}
+
+.django-table table tr th:last-child,
+.django-table table tr td:last-child {
+    padding-right: 0;
+}
+
+.django-table {
+    overflow: auto;
+}
+
+.django-table td, th {
+    white-space: nowrap;
+}
+
+/* django attribute table -------------------------------------------------- */
+.django-attribute-table table tr th {
+    padding-left: 0;
+}
+
+.django-attribute-table table tr td {
+    padding-right: 0;
+}

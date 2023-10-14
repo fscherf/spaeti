@@ -17,12 +17,14 @@ readme = "README.md"
 requires-python = ">=3.8"
 
 dependencies = [
-  "lona@git+https://github.com/lona-web-org/lona.git@fscherf/topic/hot-reload",
+  "lona@git+https://github.com/lona-web-org/lona.git@fscherf/remove-templating-from-main-thread",
   "lona-picocss@git+https://github.com/lona-web-org/lona-picocss.git@fscherf/dev/master",
   "lona-django==0.1.1",
+  "lona-html5-qrcode==0.1",
   "aiohttp-wsgi==0.10.0",
   "django>=3.2,<3.3",
   "psycopg2-binary",
+  "python-slugify",
 ]
 
 

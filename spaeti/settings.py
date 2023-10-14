@@ -3,12 +3,12 @@ import os
 from lona_picocss import (
     get_django_show_exceptions,
     get_django_auth_navigation,
-    get_debug_navigation,
     Error500View,
     Error404View,
     Error403View,
 )
 from lona_picocss import settings as picocss_settings
+from lona_picocss import NavItem
 
 from spaeti.utils import test_suite_is_running, debug_is_enabled
 
@@ -58,11 +58,47 @@ PICOCSS_COLOR_SCHEME = 'light-green'
 
 
 def get_navigation(server, request):
+    from spaeti.models import ProductCategory
+
     nav_items = []
 
-    # lona-picocss debug
-    if debug_is_enabled() and request.user.is_staff:
-        nav_items.extend(get_debug_navigation(server, request))
+    def is_member(group_name):
+        if request.user.is_superuser:
+            return True
+
+        return request.user.groups.filter(name=group_name).exists()
+
+    def get_product_categories():
+        return ProductCategory.objects.order_by('name_plural')
+
+    menu = NavItem(
+        title='Menu',
+    )
+
+    # accounts
+    if is_member('spaeti-admin'):
+        menu.nav_items.append(
+            NavItem(
+                title='Accounts',
+                url=server.reverse('account__list'),
+            ),
+        )
+
+    # products
+    if request.user.is_authenticated:
+        for product_category in get_product_categories():
+            menu.nav_items.append(
+                NavItem(
+                    title=product_category.name_plural,
+                    url=server.reverse(
+                        'product__list',
+                        product_category=product_category.slug,
+                    ),
+                ),
+            )
+
+    if menu.nav_items:
+        nav_items.append(menu)
 
     # django auth
     nav_items.extend(get_django_auth_navigation(server, request))
